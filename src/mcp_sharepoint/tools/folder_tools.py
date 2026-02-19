@@ -1,30 +1,40 @@
 """MCP tool registrations for folder operations."""
 from __future__ import annotations
 
-from typing import Optional
-
 from ..server import mcp
 from ..services.folder_service import (
     create_folder as _create_folder,
+)
+from ..services.folder_service import (
     delete_folder as _delete_folder,
+)
+from ..services.folder_service import (
     get_folder_tree as _get_folder_tree,
+)
+from ..services.folder_service import (
     list_folders as _list_folders,
 )
 
 
 @mcp.tool(
     name="List_SharePoint_Folders",
-    description="List all sub-folders in a SharePoint directory (or library root if not specified).",
+    description=(
+        "List all sub-folders in a SharePoint directory "
+        "(or library root if not specified)."
+    ),
 )
-async def list_folders_tool(parent_folder: Optional[str] = None):
+async def list_folders_tool(parent_folder: str | None = None):
     return _list_folders(parent_folder)
 
 
 @mcp.tool(
     name="Get_SharePoint_Tree",
-    description="Get a recursive tree view of folders and files starting from a SharePoint directory.",
+    description=(
+        "Get a recursive tree view of folders and files "
+        "starting from a SharePoint directory."
+    ),
 )
-async def get_sharepoint_tree_tool(parent_folder: Optional[str] = None):
+async def get_sharepoint_tree_tool(parent_folder: str | None = None):
     return _get_folder_tree(parent_folder)
 
 
@@ -32,7 +42,7 @@ async def get_sharepoint_tree_tool(parent_folder: Optional[str] = None):
     name="Create_Folder",
     description="Create a new folder in a SharePoint directory (or library root if not specified).",
 )
-async def create_folder_tool(folder_name: str, parent_folder: Optional[str] = None):
+async def create_folder_tool(folder_name: str, parent_folder: str | None = None):
     return _create_folder(folder_name, parent_folder)
 
 

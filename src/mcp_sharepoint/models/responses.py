@@ -7,10 +7,9 @@ Using typed models instead of raw dicts gives:
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
-
 
 # ---------------------------------------------------------------------------
 # Shared primitives
@@ -18,28 +17,28 @@ from pydantic import BaseModel, Field
 
 class FolderEntry(BaseModel):
     name: str
-    url: Optional[str] = None
-    created: Optional[str] = None
-    modified: Optional[str] = None
+    url: str | None = None
+    created: str | None = None
+    modified: str | None = None
 
 
 class FileEntry(BaseModel):
     name: str
-    url: Optional[str] = None
-    size: Optional[int] = None
-    created: Optional[str] = None
-    modified: Optional[str] = None
+    url: str | None = None
+    size: int | None = None
+    created: str | None = None
+    modified: str | None = None
 
 
 class TreeNode(BaseModel):
     name: str
-    path: Optional[str] = None
+    path: str | None = None
     type: str  # "folder" | "file"
-    created: Optional[str] = None
-    modified: Optional[str] = None
-    size: Optional[int] = None
-    children: List["TreeNode"] = Field(default_factory=list)
-    error: Optional[str] = None
+    created: str | None = None
+    modified: str | None = None
+    size: int | None = None
+    children: list[TreeNode] = Field(default_factory=list)
+    error: str | None = None
 
 
 TreeNode.model_rebuild()  # required for self-referential model
@@ -52,18 +51,18 @@ TreeNode.model_rebuild()  # required for self-referential model
 class SuccessResponse(BaseModel):
     success: bool = True
     message: str
-    file: Optional[Dict[str, str]] = None
-    folder: Optional[Dict[str, str]] = None
-    method: Optional[str] = None
-    path: Optional[str] = None
-    size: Optional[int] = None
-    primary_error: Optional[str] = None
+    file: dict[str, str] | None = None
+    folder: dict[str, str] | None = None
+    method: str | None = None
+    path: str | None = None
+    size: int | None = None
+    primary_error: str | None = None
 
 
 class ErrorResponse(BaseModel):
     success: bool = False
     message: str
-    detail: Optional[str] = None
+    detail: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -73,17 +72,17 @@ class ErrorResponse(BaseModel):
 class DocumentContent(BaseModel):
     name: str
     content_type: str                    # "text" | "binary"
-    content: Optional[str] = None        # for text files
-    content_base64: Optional[str] = None # for binary files
-    original_type: Optional[str] = None  # "pdf" | "excel" | "word"
+    content: str | None = None        # for text files
+    content_base64: str | None = None # for binary files
+    original_type: str | None = None  # "pdf" | "excel" | "word"
     size: int
-    page_count: Optional[int] = None
-    sheet_count: Optional[int] = None
-    paragraph_count: Optional[int] = None
+    page_count: int | None = None
+    sheet_count: int | None = None
+    paragraph_count: int | None = None
 
 
 class MetadataResponse(BaseModel):
     success: bool = True
     message: str
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    file: Optional[Dict[str, str]] = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    file: dict[str, str] | None = None

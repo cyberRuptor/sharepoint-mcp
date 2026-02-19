@@ -1,16 +1,26 @@
 """MCP tool registrations for document operations."""
 from __future__ import annotations
 
-from typing import Optional
-
 from ..server import mcp
 from ..services.document_service import (
     delete_document as _delete_document,
+)
+from ..services.document_service import (
     download_document as _download_document,
+)
+from ..services.document_service import (
     get_document_content as _get_document_content,
+)
+from ..services.document_service import (
     list_documents as _list_documents,
+)
+from ..services.document_service import (
     update_document as _update_document,
+)
+from ..services.document_service import (
     upload_document as _upload_document,
+)
+from ..services.document_service import (
     upload_from_path as _upload_from_path,
 )
 
@@ -25,7 +35,10 @@ async def list_documents_tool(folder_name: str):
 
 @mcp.tool(
     name="Get_Document_Content",
-    description="Retrieve and decode the content of a SharePoint document. Supports PDF, Word, Excel, and plain-text files.",
+    description=(
+        "Retrieve and decode the content of a SharePoint document. "
+        "Supports PDF, Word, Excel, and plain-text files."
+    ),
 )
 async def get_document_content_tool(folder_name: str, file_name: str):
     return _get_document_content(folder_name, file_name)
@@ -33,7 +46,10 @@ async def get_document_content_tool(folder_name: str, file_name: str):
 
 @mcp.tool(
     name="Upload_Document",
-    description="Upload a new document to a SharePoint folder. Pass content as a UTF-8 string or Base64-encoded bytes.",
+    description=(
+        "Upload a new document to a SharePoint folder. "
+        "Pass content as a UTF-8 string or Base64-encoded bytes."
+    ),
 )
 async def upload_document_tool(
     folder_name: str,
@@ -51,7 +67,7 @@ async def upload_document_tool(
 async def upload_from_path_tool(
     folder_name: str,
     file_path: str,
-    new_file_name: Optional[str] = None,
+    new_file_name: str | None = None,
 ):
     return _upload_from_path(folder_name, file_path, new_file_name)
 
@@ -79,7 +95,10 @@ async def delete_document_tool(folder_name: str, file_name: str):
 
 @mcp.tool(
     name="Download_Document",
-    description="Download a SharePoint document to the local filesystem (with automatic fallback to ./downloads/).",
+    description=(
+        "Download a SharePoint document to the local filesystem "
+        "(with automatic fallback to ./downloads/)."
+    ),
 )
 async def download_document_tool(folder_name: str, file_name: str, local_path: str):
     return _download_document(folder_name, file_name, local_path)

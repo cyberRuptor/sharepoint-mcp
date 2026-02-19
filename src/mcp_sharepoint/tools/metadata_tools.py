@@ -4,6 +4,8 @@ from __future__ import annotations
 from ..server import mcp
 from ..services.metadata_service import (
     get_file_metadata as _get_file_metadata,
+)
+from ..services.metadata_service import (
     update_file_metadata as _update_file_metadata,
 )
 

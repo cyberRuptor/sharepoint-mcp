@@ -3,13 +3,16 @@ from __future__ import annotations
 
 import io
 import logging
-from typing import Literal, Tuple
+from typing import Literal
 
 logger = logging.getLogger(__name__)
 
 # Mapping of logical type → file extensions
 _FILE_TYPE_MAP: dict[str, list[str]] = {
-    "text": [".txt", ".csv", ".json", ".xml", ".html", ".htm", ".md", ".js", ".ts", ".css", ".py", ".yaml", ".yml"],
+    "text": [
+        ".txt", ".csv", ".json", ".xml", ".html", ".htm",
+        ".md", ".js", ".ts", ".css", ".py", ".yaml", ".yml",
+    ],
     "pdf": [".pdf"],
     "excel": [".xlsx", ".xls"],
     "word": [".docx", ".doc"],
@@ -27,7 +30,7 @@ def detect_file_type(file_name: str) -> FileType:
     return "binary"
 
 
-def parse_pdf(content_bytes: bytes) -> Tuple[str, int]:
+def parse_pdf(content_bytes: bytes) -> tuple[str, int]:
     """Extract plain text from a PDF byte string.
 
     Returns:
@@ -45,7 +48,7 @@ def parse_pdf(content_bytes: bytes) -> Tuple[str, int]:
     return text.strip(), page_count
 
 
-def parse_excel(content_bytes: bytes) -> Tuple[str, int]:
+def parse_excel(content_bytes: bytes) -> tuple[str, int]:
     """Extract sheet data from an Excel file.
 
     Returns:
@@ -63,7 +66,7 @@ def parse_excel(content_bytes: bytes) -> Tuple[str, int]:
     return "\n".join(parts), len(sheets)
 
 
-def parse_word(content_bytes: bytes) -> Tuple[str, int]:
+def parse_word(content_bytes: bytes) -> tuple[str, int]:
     """Extract text from a Word document.
 
     Returns:

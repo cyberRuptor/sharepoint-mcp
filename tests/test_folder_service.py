@@ -35,8 +35,15 @@ class TestListFolders:
         settings_mock = MagicMock()
         settings_mock.shp_doc_library = "Shared Documents/mcp_server"
 
-        with patch("mcp_sharepoint.services.folder_service.get_sp_context", return_value=ctx), \
-             patch("mcp_sharepoint.services.folder_service.get_settings", return_value=settings_mock):
+        ctx_patch = patch(
+            "mcp_sharepoint.services.folder_service.get_sp_context",
+            return_value=ctx,
+        )
+        settings_patch = patch(
+            "mcp_sharepoint.services.folder_service.get_settings",
+            return_value=settings_mock,
+        )
+        with ctx_patch, settings_patch:
             from mcp_sharepoint.services.folder_service import list_folders
             result = list_folders()
 
@@ -55,8 +62,15 @@ class TestListFolders:
         settings_mock = MagicMock()
         settings_mock.shp_doc_library = "Shared Documents/mcp_server"
 
-        with patch("mcp_sharepoint.services.folder_service.get_sp_context", return_value=ctx), \
-             patch("mcp_sharepoint.services.folder_service.get_settings", return_value=settings_mock):
+        ctx_patch = patch(
+            "mcp_sharepoint.services.folder_service.get_sp_context",
+            return_value=ctx,
+        )
+        settings_patch = patch(
+            "mcp_sharepoint.services.folder_service.get_settings",
+            return_value=settings_mock,
+        )
+        with ctx_patch, settings_patch:
             from mcp_sharepoint.services.folder_service import list_folders
             result = list_folders()
 

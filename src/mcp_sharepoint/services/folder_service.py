@@ -3,21 +3,20 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..config import get_settings
 from ..core import get_sp_context
-from ..exceptions import SharePointOperationError
 
 logger = logging.getLogger(__name__)
 
 
-def _sp_path(sub_path: Optional[str] = None) -> str:
+def _sp_path(sub_path: str | None = None) -> str:
     library = get_settings().shp_doc_library
     return f"{library}/{sub_path or ''}".rstrip("/")
 
 
-def _load_items(path: str, item_type: str) -> List[Dict[str, Any]]:
+def _load_items(path: str, item_type: str) -> list[dict[str, Any]]:
     """Generic loader for folders or files from a SharePoint path."""
     ctx = get_sp_context()
     folder = ctx.web.get_folder_by_server_relative_url(path)
@@ -30,7 +29,7 @@ def _load_items(path: str, item_type: str) -> List[Dict[str, Any]]:
 
     result = []
     for item in items:
-        entry: Dict[str, Any] = {
+        entry: dict[str, Any] = {
             "name": item.name,
             "url": item.properties.get("ServerRelativeUrl"),
             "created": (
@@ -54,13 +53,13 @@ def _load_items(path: str, item_type: str) -> List[Dict[str, Any]]:
 # Public API
 # ---------------------------------------------------------------------------
 
-def list_folders(parent_folder: Optional[str] = None) -> List[Dict[str, Any]]:
+def list_folders(parent_folder: str | None = None) -> list[dict[str, Any]]:
     """List sub-folders in *parent_folder* (or library root if omitted)."""
     logger.info("Listing folders in %s", parent_folder or "root")
     return _load_items(_sp_path(parent_folder), "folders")
 
 
-def create_folder(folder_name: str, parent_folder: Optional[str] = None) -> Dict[str, Any]:
+def create_folder(folder_name: str, parent_folder: str | None = None) -> dict[str, Any]:
     """Create *folder_name* inside *parent_folder* (or library root)."""
     ctx = get_sp_context()
     parent_path = _sp_path(parent_folder)
@@ -80,7 +79,7 @@ def create_folder(folder_name: str, parent_folder: Optional[str] = None) -> Dict
     }
 
 
-def delete_folder(folder_path: str) -> Dict[str, Any]:
+def delete_folder(folder_path: str) -> dict[str, Any]:
     """Delete the empty folder at *folder_path*."""
     ctx = get_sp_context()
     full_path = _sp_path(folder_path)
@@ -104,7 +103,7 @@ def delete_folder(folder_path: str) -> Dict[str, Any]:
     return {"success": True, "message": f"Folder '{folder_path}' deleted successfully"}
 
 
-def get_folder_tree(parent_folder: Optional[str] = None) -> Dict[str, Any]:
+def get_folder_tree(parent_folder: str | None = None) -> dict[str, Any]:
     """Return a recursive tree of folders and files starting at *parent_folder*."""
     cfg = get_settings()
     ctx = get_sp_context()
@@ -125,7 +124,7 @@ def get_folder_tree(parent_folder: Optional[str] = None) -> Dict[str, Any]:
             "children": [],
         }
 
-    tree_nodes: Dict[str, List] = {}
+    tree_nodes: dict[str, list] = {}
     pending = [parent_folder or ""]
 
     for level in range(cfg.shp_max_depth):
@@ -165,7 +164,7 @@ def get_folder_tree(parent_folder: Optional[str] = None) -> Dict[str, Any]:
         if level < cfg.shp_max_depth - 1:
             time.sleep(cfg.shp_level_delay)
 
-    def _build(path: str) -> List[Dict]:
+    def _build(path: str) -> list[dict]:
         children = tree_nodes.get(path, [])
         for child in children:
             if child["type"] == "folder":

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from ..config import get_settings
 from ..core import get_sp_context
@@ -15,7 +15,7 @@ def _sp_path(sub_path: str = "") -> str:
     return f"{library}/{sub_path}".rstrip("/")
 
 
-def get_file_metadata(folder_name: str, file_name: str) -> Dict[str, Any]:
+def get_file_metadata(folder_name: str, file_name: str) -> dict[str, Any]:
     """Return all list-item properties for *file_name*."""
     ctx = get_sp_context()
     file_path = _sp_path(f"{folder_name}/{file_name}")
@@ -42,8 +42,8 @@ def get_file_metadata(folder_name: str, file_name: str) -> Dict[str, Any]:
 def update_file_metadata(
     folder_name: str,
     file_name: str,
-    metadata: Dict[str, Any],
-) -> Dict[str, Any]:
+    metadata: dict[str, Any],
+) -> dict[str, Any]:
     """Update list-item *metadata* fields for *file_name*."""
     ctx = get_sp_context()
     file_path = _sp_path(f"{folder_name}/{file_name}")
@@ -52,7 +52,7 @@ def update_file_metadata(
     file_obj = ctx.web.get_file_by_server_relative_url(file_path)
     list_item = file_obj.listItemAllFields
 
-    form_values: Dict[str, str] = {}
+    form_values: dict[str, str] = {}
     for key, value in metadata.items():
         if value is None:
             continue

@@ -1,17 +1,17 @@
+from .document_service import (
+    delete_document,
+    download_document,
+    get_document_content,
+    list_documents,
+    update_document,
+    upload_document,
+    upload_from_path,
+)
 from .folder_service import (
-    list_folders,
     create_folder,
     delete_folder,
     get_folder_tree,
-)
-from .document_service import (
-    list_documents,
-    get_document_content,
-    upload_document,
-    upload_from_path,
-    update_document,
-    delete_document,
-    download_document,
+    list_folders,
 )
 from .metadata_service import get_file_metadata, update_file_metadata
 
